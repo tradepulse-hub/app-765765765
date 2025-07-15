@@ -21,21 +21,21 @@ const TOKENS = [
     symbol: "WLD",
     name: "Worldcoin",
     decimals: 18,
-    logo: "https://ani-labs.xyz/worldcoin-org-wld-logo.png",
+    logo: "/images/worldcoin.jpeg",
     color: "#000000",
   },
   {
-    address: "0x4d0f53f8810221579627eF6Dd4d64Ca107b2BEF8",
-    symbol: "ANI",
-    name: "Ani Token",
+    address: "0x834a73c0a83F3BCe349A116FFB2A4c2d1C651E45",
+    symbol: "TPF",
+    name: "TPulseFi",
     decimals: 18,
-    logo: "https://ani-labs.xyz/ani_labs_black.png",
-    color: "#FFFFFF",
+    logo: "/images/logo-tpf.png",
+    color: "#00D4FF",
   },
 ]
 
 const wldToken = TOKENS.find((t) => t.symbol === "WLD")!
-const aniToken = TOKENS.find((t) => t.symbol === "ANI")!
+const tpfToken = TOKENS.find((t) => t.symbol === "TPF")!
 
 // --- Provider and SDK setup ---
 const RPC_URL = "https://worldchain-mainnet.g.alchemy.com/public"
@@ -63,14 +63,14 @@ async function loadTokenBalances(address: string) {
   // Placeholder for reloading token balances after swap
   console.log(`Token balances loaded for address: ${address}`)
 }
-async function loadAniBalance(address: string) {
+async function loadTpfBalance(address: string) {
   // Placeholder for reloading ANI balance after swap
-  console.log(`ANI balance loaded for address: ${address}`)
+  console.log(`TPF balance loaded for address: ${address}`)
 }
 
 // --- The doSwap function ---
 /**
- * Executes a token swap from WLD to ANI using the Worldchain SDK.
+ * Executes a token swap from WLD to TPF using the Worldchain SDK.
  * @param walletAddress The user's wallet address
  * @param quote The quote object returned from swapHelper.estimate.quote
  * @param amountIn The amount of WLD to swap (as a string)
@@ -88,14 +88,14 @@ export async function doSwap({
   try {
     const swapParams: SwapParams["input"] = {
       tokenIn: wldToken.address,
-      tokenOut: aniToken.address,
+      tokenOut: tpfToken.address,
       amountIn,
       tx: {
         data: quote.data,
         to: quote.to,
         value: quote.value,
       },
-      partnerCode: "14298",
+      partnerCode: "24568",
       feeAmountOut: quote.addons?.feeAmountOut,
       fee: "0.2",
       feeReceiver: "0x4bb270ef6dcb052a083bd5cff518e2e019c0f4ee",
@@ -108,7 +108,7 @@ export async function doSwap({
       await provider.getBlockNumber()
       await updateUserData(walletAddress)
       await loadTokenBalances(walletAddress)
-      await loadAniBalance(walletAddress)
+      await loadTpfBalance(walletAddress)
       console.log("Swap successful!")
     } else {
       console.error("Swap failed: ", result)
